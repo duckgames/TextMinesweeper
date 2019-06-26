@@ -6,6 +6,7 @@ public class Game {
 
     private int gridWidth, gridHeight;
     private int numMines;
+    private int numChecked;
     private Square[][] grid;
 
     Game(int gridWidth, int gridHeight, int numMines) {
@@ -73,6 +74,7 @@ public class Game {
     public void checkNeighboursForMines(int x, int y) {
         if (!grid[y][x].isChecked()) {
             grid[y][x].setChecked(true);
+            numChecked++;
 
             if (grid[y][x].getNeighbourMines() == 0) {
 
@@ -89,6 +91,28 @@ public class Game {
                     checkNeighboursForMines(x, y + 1);
             }
         }
+    }
+
+    public boolean checkForWin() {
+        int totalSquares = gridWidth * gridHeight;
+
+        if (numChecked + numMines == totalSquares) return true;
+
+        int numFlags = 0;
+        int correctFlags = 0;
+        for (int i = 0; i < gridHeight; i++) {
+            for (int j = 0; j < gridWidth; j++) {
+                if (grid[i][j].isMine() && grid[i][j].isFlagged()) {
+                    numFlags++;
+                    correctFlags++;
+                }
+                else if (grid[i][j].isFlagged()) {
+                    numFlags++;
+                }
+            }
+        }
+
+        return numFlags == numMines && correctFlags == numMines;
     }
 
     private void incrementNeighbourMines(int x, int y) {

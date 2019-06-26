@@ -20,7 +20,8 @@ public class Main {
         Game game = new Game(gridWidth, gridHeight, numMines);
 
         boolean dead = false;
-        while (!dead) {
+        boolean won = false;
+        while (!dead && !won) {
             game.drawGrid();
 
             System.out.print("\nEnter x coordinate: \n");
@@ -30,9 +31,16 @@ public class Main {
 
             dead = game.isMine(x, y);
             game.checkNeighboursForMines(x, y);
+            won = game.checkForWin();
         }
 
-        System.out.print("\nYOU DIED\n");
+        game.drawGrid();
+
+        if (dead)
+            System.out.print("\nYOU DIED\n");
+        if (won)
+            System.out.print("\nYOU WON\n");
+
 
         scanner.close();
     }
