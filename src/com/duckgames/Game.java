@@ -15,6 +15,14 @@ public class Game {
 
         this.grid = new Square[gridHeight][gridWidth];
 
+        for (int i = 0; i < gridHeight; i++) {
+            for (int j = 0; j < gridWidth; j++) {
+                if (grid[i][j] == null) {
+                    grid[i][j] = new Square();
+                }
+            }
+        }
+
         Random random = new Random();
         random.setSeed(System.currentTimeMillis());
 
@@ -23,18 +31,10 @@ public class Game {
             int x = random.nextInt(gridWidth);
             int y = random.nextInt(gridHeight);
 
-            if (grid[y][x] == null) {
-                grid[y][x] = new Square(true);
+            if (!grid[y][x].isMine()) {
+                grid[y][x].setMine(true);
+                incrementNeighbourMines(x, y);
                 mines++;
-            }
-        }
-
-        for (int i = 0; i < gridHeight; i++) {
-            for (int j = 0; j < gridWidth; j++) {
-                if (grid[i][j] == null) {
-                    grid[i][j] = new Square(false);
-                    grid[i][j].setNeighbourMines(countNeighbourMines(i, j));
-                }
             }
         }
     }
@@ -46,20 +46,19 @@ public class Game {
     public void drawGrid() {
         for (int i = 0; i < gridHeight; i++) {
             for (int j = 0; j < gridWidth; j++) {
+
+              //      if (grid[i][j].isMine()) {
+              //          System.out.print("|M");
+              //     }
                 if (!grid[i][j].isChecked()) {
                     System.out.print("| ");
                 }
                 else {
-                    if (grid[i][j].isMine()) {
-                        System.out.print("|M");
+                    if (grid[i][j].getNeighbourMines() > 0) {
+                        System.out.printf("|%d", grid[i][j].getNeighbourMines());
                     }
                     else {
-                        if (grid[i][j].getNeighbourMines() > 0) {
-                            System.out.printf("|%d", grid[i][j].getNeighbourMines());
-                        }
-                        else {
-                            System.out.print("|X");
-                        }
+                        System.out.print("|X");
                     }
                 }
             }
@@ -67,43 +66,43 @@ public class Game {
         }
     }
 
-    public boolean checkSquareForMine(int x, int y) {
-        if (grid[y][x].isMine()) return true;
-
-        grid[y][x].setChecked(true);
-        return false;
+    public boolean isMine(int x, int y) {
+        return grid[y][x].isMine();
     }
 
-    private int countNeighbourMines(int x, int y) {
-        int mines = 0;
+    public void checkNeighboursForMines(int x, int y) {
+        if (!grid[y][x].isChecked()) {
+            grid[y][x].setChecked(true);
+
+            if (grid[y][x].getNeighbourMines() == 0) {
+
+                if (x - 1 >= 0)
+                    checkNeighboursForMines(x - 1, y);
+
+                if (x + 1 < gridWidth)
+                    checkNeighboursForMines(x + 1, y);
+
+                if (y - 1 >= 0)
+                    checkNeighboursForMines(x, y - 1);
+
+                if (y + 1 < gridHeight)
+                    checkNeighboursForMines(x, y + 1);
+            }
+        }
+    }
+
+    private void incrementNeighbourMines(int x, int y) {
         int startX = x - 1;
         int startY = y - 1;
-        int toCheckX, toCheckY;
+        int endX = startX + 3;
+        int endY = startY + 3;
 
-        for (int i = 0; i < 3; i++) {
-            toCheckY = startY + i;
-
-            if (toCheckY < 0 || toCheckY >= gridHeight) {
-                continue;
-            }
-
-            for (int j = 0; j < 3; j++) {
-                toCheckX = startX + j;
-
-                if (toCheckX < 0 || toCheckX >= gridWidth) {
-                    continue;
-                }
-
-                if ((toCheckX == x && toCheckY == y)) {
-                    continue;
-                }
-
-                if (grid[toCheckY][toCheckX] != null && grid[toCheckY][toCheckX].isMine()) {
-                    mines++;
+        for (int i = Math.max(0, startX); i < Math.min(gridWidth, endX); i++) {
+            for (int j = Math.max(0, startY); j < Math.min(gridHeight, endY); j++) {
+                if (!grid[j][i].isMine()) {
+                    grid[j][i].incrementNeighbourMines();
                 }
             }
         }
-
-        return mines;
     }
 }

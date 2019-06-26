@@ -2,14 +2,10 @@ package com.duckgames;
 
 public class Square {
 
-    private boolean isMine;
+    private boolean isMine = false;
     private boolean isFlagged = false;
     private boolean isChecked = false;
     private int neighbourMines = 0;
-
-    Square(boolean isMine) {
-        this.isMine = isMine;
-    }
 
     public boolean isMine() {
         return isMine;
@@ -39,7 +35,7 @@ public class Square {
         return neighbourMines;
     }
 
-    public void setNeighbourMines(int neighbourMines) {
-        this.neighbourMines = neighbourMines;
+    public void incrementNeighbourMines() {
+        this.neighbourMines++;
     }
 }

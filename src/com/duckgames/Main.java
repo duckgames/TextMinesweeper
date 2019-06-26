@@ -28,7 +28,8 @@ public class Main {
             System.out.print("\nEnter y coordinate: \n");
             int y = scanner.nextInt();
 
-            dead = game.checkSquareForMine(x, y);
+            dead = game.isMine(x, y);
+            game.checkNeighboursForMines(x, y);
         }
 
         System.out.print("\nYOU DIED\n");
