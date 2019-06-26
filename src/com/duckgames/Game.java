@@ -13,7 +13,7 @@ public class Game {
         this.gridHeight = gridHeight;
         this.numMines = numMines;
 
-        this.grid = new Square[gridWidth][gridHeight];
+        this.grid = new Square[gridHeight][gridWidth];
 
         Random random = new Random();
         random.setSeed(System.currentTimeMillis());
@@ -23,14 +23,14 @@ public class Game {
             int x = random.nextInt(gridWidth);
             int y = random.nextInt(gridHeight);
 
-            if (grid[x][y] == null) {
-                grid[x][y] = new Square(true);
+            if (grid[y][x] == null) {
+                grid[y][x] = new Square(true);
                 mines++;
             }
         }
 
-        for (int i = 0; i < gridWidth; i++) {
-            for (int j = 0; j < gridHeight; j++) {
+        for (int i = 0; i < gridHeight; i++) {
+            for (int j = 0; j < gridWidth; j++) {
                 if (grid[i][j] == null) {
                     grid[i][j] = new Square(false);
                     grid[i][j].setNeighbourMines(countNeighbourMines(i, j));
@@ -44,8 +44,8 @@ public class Game {
     }
 
     public void drawGrid() {
-        for (int i = 0; i < gridWidth; i++) {
-            for (int j = 0; j < gridHeight; j++) {
+        for (int i = 0; i < gridHeight; i++) {
+            for (int j = 0; j < gridWidth; j++) {
                 if (!grid[i][j].isChecked()) {
                     System.out.print("| ");
                 }
@@ -81,16 +81,16 @@ public class Game {
         int toCheckX, toCheckY;
 
         for (int i = 0; i < 3; i++) {
-            toCheckX = startX + i;
+            toCheckY = startY + i;
 
-            if (toCheckX < 0 || toCheckX >= gridWidth) {
+            if (toCheckY < 0 || toCheckY >= gridHeight) {
                 continue;
             }
 
             for (int j = 0; j < 3; j++) {
-                toCheckY = startY + j;
+                toCheckX = startX + j;
 
-                if (toCheckY < 0 || toCheckY >= gridHeight) {
+                if (toCheckX < 0 || toCheckX >= gridWidth) {
                     continue;
                 }
 
@@ -98,7 +98,7 @@ public class Game {
                     continue;
                 }
 
-                if (grid[toCheckX][toCheckY] != null && grid[toCheckX][toCheckY].isMine()) {
+                if (grid[toCheckY][toCheckX] != null && grid[toCheckY][toCheckX].isMine()) {
                     mines++;
                 }
             }
