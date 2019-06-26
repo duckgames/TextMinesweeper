@@ -4,6 +4,7 @@ public class Square {
 
     private boolean isMine;
     private boolean isFlagged = false;
+    private boolean isChecked = false;
     private int neighbourMines = 0;
 
     Square(boolean isMine) {
@@ -24,6 +25,14 @@ public class Square {
 
     public void setFlagged(boolean flagged) {
         isFlagged = flagged;
+    }
+
+    public boolean isChecked() {
+        return isChecked;
+    }
+
+    public void setChecked(boolean checked) {
+        isChecked = checked;
     }
 
     public int getNeighbourMines() {

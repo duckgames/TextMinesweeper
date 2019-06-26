@@ -33,7 +33,7 @@ public class Game {
             for (int j = 0; j < gridHeight; j++) {
                 if (grid[i][j] == null) {
                     grid[i][j] = new Square(false);
-                    grid[i][j].setNeighbourMines(checkForNeighbourMines(i, j));
+                    grid[i][j].setNeighbourMines(countNeighbourMines(i, j));
                 }
             }
         }
@@ -46,18 +46,35 @@ public class Game {
     public void drawGrid() {
         for (int i = 0; i < gridWidth; i++) {
             for (int j = 0; j < gridHeight; j++) {
-                if (grid[i][j].isMine()) {
-                    System.out.print("|M");
+                if (!grid[i][j].isChecked()) {
+                    System.out.print("| ");
                 }
                 else {
-                    System.out.printf("|%d", grid[i][j].getNeighbourMines());
+                    if (grid[i][j].isMine()) {
+                        System.out.print("|M");
+                    }
+                    else {
+                        if (grid[i][j].getNeighbourMines() > 0) {
+                            System.out.printf("|%d", grid[i][j].getNeighbourMines());
+                        }
+                        else {
+                            System.out.print("|X");
+                        }
+                    }
                 }
             }
             System.out.print("|\n");
         }
     }
 
-    private int checkForNeighbourMines(int x, int y) {
+    public boolean checkSquareForMine(int x, int y) {
+        if (grid[y][x].isMine()) return true;
+
+        grid[y][x].setChecked(true);
+        return false;
+    }
+
+    private int countNeighbourMines(int x, int y) {
         int mines = 0;
         int startX = x - 1;
         int startY = y - 1;

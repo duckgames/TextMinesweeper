@@ -19,10 +19,19 @@ public class Main {
 
         Game game = new Game(gridWidth, gridHeight, numMines);
 
-        game.drawGrid();
+        boolean dead = false;
+        while (!dead) {
+            game.drawGrid();
 
-        System.out.print("Press any key to quit\n");
-        scanner.next();
+            System.out.print("\nEnter x coordinate: \n");
+            int x = scanner.nextInt();
+            System.out.print("\nEnter y coordinate: \n");
+            int y = scanner.nextInt();
+
+            dead = game.checkSquareForMine(x, y);
+        }
+
+        System.out.print("\nYOU DIED\n");
 
         scanner.close();
     }
