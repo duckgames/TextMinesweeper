@@ -40,10 +40,6 @@ public class Game {
         }
     }
 
-    public Square[][] getGrid() {
-        return grid;
-    }
-
     public void drawGrid() {
         for (int i = 0; i < gridHeight; i++) {
             for (int j = 0; j < gridWidth; j++) {
