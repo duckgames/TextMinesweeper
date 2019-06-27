@@ -27,11 +27,11 @@ public class Main {
         int gridWidth, gridHeight;
         int numMines;
 
-        System.out.print("Welcome to Minesweeper!\nEnter grid width: \n");
+        System.out.print("Welcome to Minesweeper!\nEnter grid width:\n");
         gridWidth = scanner.nextInt();
-        System.out.print("\nEnter grid height: \n");
+        System.out.print("\nEnter grid height:\n");
         gridHeight = scanner.nextInt();
-        System.out.print("\nHow many mines? \n");
+        System.out.print("\nHow many mines?\n");
         numMines = scanner.nextInt();
 
         Game game = new Game(gridWidth, gridHeight, numMines);
@@ -41,14 +41,32 @@ public class Main {
         while (!dead && !won) {
             game.drawGrid();
 
-            System.out.print("\nSelect 1 to search a square or 2 to place or remove a flag. \n");
-            int selection = scanner.nextInt();
+            System.out.print("\nSelect 1 to search a square or 2 to place or remove a flag.\n");
+            
+            int selection = 0;
+            
+            while (selection != 1 && selection != 2) {
+                selection = scanner.nextInt();
+            }
 
-            System.out.print("\nEnter x coordinate: \n");
-            int x = scanner.nextInt();
-            System.out.print("\nEnter y coordinate: \n");
-            int y = scanner.nextInt();
+            System.out.printf("\nEnter x coordinate between 0 and %d:\n", gridWidth - 1);
+            int x = -1;
+            while (x == -1) {
+                int temp = scanner.nextInt();
+                if (temp >= 0 && temp < gridWidth) {
+                    x = temp;
+                }
+            }
+            System.out.printf("\nEnter y coordinate between 0 and %d:\n", gridHeight - 1);
 
+            int y = -1;
+            while (y == -1) {
+                int temp = scanner.nextInt();
+                if (temp >= 0 && temp < gridHeight) {
+                    y = temp;
+                }
+            }
+            
             if (selection == 1) {
                 dead = game.isMine(x, y);
                 game.checkNeighboursForMines(x, y);
