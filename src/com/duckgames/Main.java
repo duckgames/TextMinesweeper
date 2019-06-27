@@ -5,10 +5,27 @@ import java.util.Scanner;
 public class Main {
 
     public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        boolean quit = false;
+
+        while (!quit) {
+            game(scanner);
+
+            System.out.print("\nPress y to play again or any other key to quit.\n");
+
+            while (!scanner.hasNext()) { }
+
+            char c = scanner.next().charAt(0);
+
+            if (c != 'y' && c != 'Y')
+                quit = true;
+        }
+        scanner.close();
+    }
+
+    public static void game(Scanner scanner) {
         int gridWidth, gridHeight;
         int numMines;
-
-        Scanner scanner = new Scanner(System.in);
 
         System.out.print("Welcome to Minesweeper!\nEnter grid width: \n");
         gridWidth = scanner.nextInt();
@@ -40,8 +57,5 @@ public class Main {
             System.out.print("\nYOU DIED\n");
         if (won)
             System.out.print("\nYOU WON\n");
-
-
-        scanner.close();
     }
 }
