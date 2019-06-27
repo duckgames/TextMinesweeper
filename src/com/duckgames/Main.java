@@ -41,13 +41,21 @@ public class Main {
         while (!dead && !won) {
             game.drawGrid();
 
+            System.out.print("\nSelect 1 to search a square or 2 to place or remove a flag. \n");
+            int selection = scanner.nextInt();
+
             System.out.print("\nEnter x coordinate: \n");
             int x = scanner.nextInt();
             System.out.print("\nEnter y coordinate: \n");
             int y = scanner.nextInt();
 
-            dead = game.isMine(x, y);
-            game.checkNeighboursForMines(x, y);
+            if (selection == 1) {
+                dead = game.isMine(x, y);
+                game.checkNeighboursForMines(x, y);
+            }
+            else {
+                game.changeFlagStatus(x, y);
+            }
             won = game.checkForWin();
         }
 

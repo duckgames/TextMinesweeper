@@ -47,7 +47,10 @@ public class Game {
               //      if (grid[i][j].isMine()) {
               //          System.out.print("|M");
               //     }
-                if (!grid[i][j].isChecked()) {
+                if (grid[i][j].isFlagged()) {
+                    System.out.print("|F");
+                }
+                else if (!grid[i][j].isChecked()) {
                     System.out.print("| ");
                 }
                 else {
@@ -61,6 +64,10 @@ public class Game {
             }
             System.out.print("|\n");
         }
+    }
+
+    public void changeFlagStatus(int x, int y) {
+        grid[y][x].setFlagged(!grid[y][x].isFlagged());
     }
 
     public boolean isMine(int x, int y) {
