@@ -41,6 +41,8 @@ public class Game {
     }
 
     public void drawGrid() {
+        System.out.print("  0\n");
+        System.out.print("0");
         for (int i = 0; i < gridHeight; i++) {
             for (int j = 0; j < gridWidth; j++) {
 
@@ -63,6 +65,7 @@ public class Game {
                 }
             }
             System.out.print("|\n");
+            System.out.print(" ");
         }
     }
 
